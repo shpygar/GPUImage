@@ -215,7 +215,7 @@ NSString *const kGPUImageColorSwizzlingFragmentShaderString = SHADER_STRING
         }
     }
     
-    /*
+    
     NSDictionary *videoCleanApertureSettings = [NSDictionary dictionaryWithObjectsAndKeys:
                                                 [NSNumber numberWithInt:videoSize.width], AVVideoCleanApertureWidthKey,
                                                 [NSNumber numberWithInt:videoSize.height], AVVideoCleanApertureHeightKey,
@@ -235,10 +235,10 @@ NSString *const kGPUImageColorSwizzlingFragmentShaderString = SHADER_STRING
     [compressionProperties setObject:[NSNumber numberWithInt: 16] forKey:AVVideoMaxKeyFrameIntervalKey];
     [compressionProperties setObject:AVVideoProfileLevelH264Main31 forKey:AVVideoProfileLevelKey];
     
-    [outputSettings setObject:compressionProperties forKey:AVVideoCompressionPropertiesKey];
-    */
-     
-    assetWriterVideoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:outputSettings];
+    NSMutableDictionary *settings = outputSettings.mutableCopy;
+    [settings setObject:compressionProperties forKey:AVVideoCompressionPropertiesKey];
+    
+    assetWriterVideoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:settings];
     assetWriterVideoInput.expectsMediaDataInRealTime = _encodingLiveVideo;
     
     // You need to use BGRA for the video in order to get realtime encoding. I use a color-swizzling shader to line up glReadPixels' normal RGBA output with the movie input's BGRA.
